@@ -16,6 +16,37 @@
 
 ```
    index.html --- script-call--> index.jsx ----entrypoint-render---> App component
+                                                                           |
+                                                                           |
+                                                                           V
+                                                                      Nested components     
 ```
 
-4. 
+4. We can create a component using a function in a jsx file.
+   - we can have multiple component in the same jsx file (multiple methods)
+   - We can then use those components like an element of HTML
+
+```
+function Header() {
+  return (
+    <header>
+      <img src="src/assets/react-core-concepts.png" alt="Stylized atom" />
+      <h1>React Essentials</h1>
+    </header>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <Header />
+      <main>
+        <h2>Time to get started!</h2>
+      </main>
+    </div>
+  );
+}
+
+export default App;
+
+```
