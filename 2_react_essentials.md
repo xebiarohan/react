@@ -53,7 +53,7 @@ export default App;
 ```
 
 5. Dynamic content in a component
-   - we use curly branchets for dynamic values
+   - We use curly brackets for dynamic values
    - we can put any expression in the curly brackets (not if-else, for loop)
 
 ```
@@ -80,7 +80,7 @@ function Header() {
 ```
 
 6. Importing image the right way
-   - First way is to directly add the source in the image tag, but during the build process, itcan get lost
+   - First way is to directly add the source in the image tag, but during the build process, it can get lost
    - Better way is to use the import statement
    - we can keep anyname during the import
 
@@ -149,5 +149,28 @@ function CoreConcecpt({image, title, description}) {
     </li>
   );
 }
+
+```
+
+8. CSS files
+   - The default css file (index.css) needs to be imported in index.jsx
+   - Similarly the other component specific css files needs to be imported in those component class
+   - Just because we are adding a CSS style in a component specific file that does not mean that the scope of the CSS is limited to that component only. we can use it in other component as well
+
+```Example
+import './Header.css';
+```
+
+9. Folder structure
+    - In assets create component folder
+    - In component folder create component specific folders like Header, footer, Description, etc
+    - In those folders put the jsx and css files
+
+```
+      assets -> component -> Header 
+                              /  \
+                             /    \
+                            /      \    
+                    Header.jsx   Header.css
 
 ```
