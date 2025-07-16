@@ -139,7 +139,7 @@ function App() {
 }
 ```
 
-``` using object destructuring
+```using object destructuring
 function CoreConcecpt({image, title, description}) {
   return (
     <li>
@@ -162,15 +162,85 @@ import './Header.css';
 ```
 
 9. Folder structure
-    - In assets create component folder
-    - In component folder create component specific folders like Header, footer, Description, etc
-    - In those folders put the jsx and css files
+   - In assets create component folder
+   - In component folder create component specific folders like Header, footer, Description, etc
+   - In those folders put the jsx and css files
 
 ```
-      assets -> component -> Header 
+      assets -> component -> Header
                               /  \
                              /    \
-                            /      \    
+                            /      \
                     Header.jsx   Header.css
 
 ```
+
+10. Children prop
+    - we can pass the value in the opening and closing element tag of a component
+    - That can be accessed using the props.children
+
+```
+  <TabButton>Components</TabButton>
+```
+
+```
+export default function TabButton(props) {
+    return <li><button>{props.children}</button></li> ;
+}
+```
+
+11. Event listeners
+    - we can listen to different events on HTML elements using on... like onClick, onHover, etc
+    - we then pass the function that we want to call to that event listener
+    - we can also get the function to call as a prop.
+
+```
+export default function TabButton(props) {
+  function handleClick() {
+    console.log("Hello world");
+  }
+
+  return (
+    <li>
+      <button onClick={handleClick}>{props.children}</button>
+    </li>
+  );
+}
+```
+
+```
+ <TabButton onSelect={handleSelect}>Components</TabButton>
+
+
+export default function TabButton({children, onSelect}) {
+  return (
+    <li>
+      <button onClick={onSelect}>{children}</button>
+    </li>
+  );
+}
+
+```
+
+12. Passing arguments to event listener functions
+    - Using arrow functions
+    - In the example we have a handleSelect function that takes 1 argument
+    - We are passing this function as a prop to the TabButton component
+    - There it is mapped to a button call (as shown in the previous point)
+
+```
+  function handleSelect(selectedButton) {
+    console.log(selectedButton);
+  }
+
+  <menu>
+    <TabButton onSelect={() => handleSelect('components')}>Components</TabButton>
+    <TabButton onSelect={() => handleSelect('jsx')}>JSX</TabButton>
+    <TabButton onSelect={() => handleSelect('props')}>Props</TabButton>
+    <TabButton onSelect={() => handleSelect('state')}>State</TabButton>
+  </menu>
+
+```
+
+13. By default a react component is executed once, we have to tell react to execute any component again
+    -  Just because a value of a component is changed that does not mean it will rerender itself
