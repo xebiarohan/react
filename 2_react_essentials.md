@@ -244,3 +244,86 @@ export default function TabButton({children, onSelect}) {
 
 13. By default a react component is executed once, we have to tell react to execute any component again
     -  Just because a value of a component is changed that does not mean it will rerender itself
+
+14. Managing state and using hooks
+    - First we have to import it from the react
+    - All hooks starts with 'use' keyword
+    - React hooks are special functions that must be directly called inside component function, not inside any other function that is inside component function.
+    - Hooks must be called on the top level of the component function
+
+```
+import {useState} from 'react';
+```
+
+15. Hook useState
+    - Use to store some data, reloads the component function where it is getting called by the data is updated.
+    - It returns an array that has exactly 2 elements
+    - First element is the current value of the variable that we are storing
+    - Second argument is the function that is used to update the value of the variable
+    - Even if we are changing the value of the variable we are using const, because the component is rerendered and the variable is created again.
+    - Then on some action like button click we can use the function to set the value of the variable.
+    - Default value can be null like useState()
+
+```
+import { useState } from "react";
+
+function Counter() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  function handleClick() {
+    setIsVisible(true);
+  }
+
+  return (
+    <div>
+      <button onClick={handleClick}>Show Details</button>
+      {isVisible && <p>Amazing details!</p>}
+    </div>
+  );
+}
+
+```
+
+16. Rendering a content conditionally
+    - We can add condition while rendering the HTML elements
+    - Using the ternary operator
+    - Using && operator
+    - Using if else
+
+```
+          {!selectedTopic ? (
+            <p>Please select a topic</p>
+          ) : (
+            <div id="tab-content">
+              <h3>{EXAMPLES[selectedTopic].title}</h3>
+              <p>{EXAMPLES[selectedTopic].description}</p>
+              <pre>
+                <code>{EXAMPLES[selectedTopic].code}</code>
+              </pre>
+            </div>
+          )}
+```
+
+```
+    {!isSelectedTopic && <p>Please select a topic</p>}
+```
+
+```
+let tabContent = <p>Please select a topic</p>;
+
+if(isSelected) {
+  tabContent = (
+            <div id="tab-content">
+              <h3>{EXAMPLES[selectedTopic].title}</h3>
+              <p>{EXAMPLES[selectedTopic].description}</p>
+              <pre>
+                <code>{EXAMPLES[selectedTopic].code}</code>
+              </pre>
+            </div>
+          );
+}
+
+
+return ({tabContent});
+
+```
