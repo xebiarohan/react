@@ -1,4 +1,4 @@
-function CoreConcecpt(props) {
+function CoreConcept(props) {
   return (
     <li>
       <img src={props.image} alt={props.title}></img>
@@ -8,4 +8,4 @@ function CoreConcecpt(props) {
   );
 }
 
-export default CoreConcecpt;
+export default CoreConcept;

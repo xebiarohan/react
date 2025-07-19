@@ -243,7 +243,8 @@ export default function TabButton({children, onSelect}) {
 ```
 
 13. By default a react component is executed once, we have to tell react to execute any component again
-    -  Just because a value of a component is changed that does not mean it will rerender itself
+
+    - Just because a value of a component is changed that does not mean it will rerender itself
 
 14. Managing state and using hooks
     - First we have to import it from the react
@@ -327,3 +328,47 @@ if(isSelected) {
 return ({tabContent});
 
 ```
+
+17. Dynamic CSS
+    - Use ternary operator to dynamically apply css
+    - Use className prop on the elements to apply css
+
+```
+export default function TabButton({children, onSelect, isSelected}) {
+
+  return (
+    <li>
+      <button className={isSelected ? 'active': ''} onClick={onSelect}>{children}</button>
+    </li>
+  );
+}
+
+```
+
+18. Outputting list data dynamically
+    - In the first example we are writting the same code multiple times
+    - CORE_CONCEPTS array contains title, description and image values
+    - but if we array does not contains 4 elements, it will fail
+    - We can use the map() method to transform the array item to an JSX element
+    - Need to add key on each element that takes a unique value
+
+```
+          <ul>
+            <CoreConcecpt {...CORE_CONCEPTS[0]} />
+            <CoreConcecpt {...CORE_CONCEPTS[1]} />
+            <CoreConcecpt {...CORE_CONCEPTS[2]} />
+            <CoreConcecpt
+              title={CORE_CONCEPTS[3].title}
+              description={CORE_CONCEPTS[3].description}
+              image={CORE_CONCEPTS[3].image}
+            />
+          </ul>
+```
+
+```
+          <ul>
+            {CORE_CONCEPTS.map((conceptItem) => (
+              <CoreConcept key={conceptItem.title} {...conceptItem}></CoreConcept>
+            ))}
+          </ul>
+``

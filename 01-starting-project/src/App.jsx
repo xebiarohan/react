@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { CORE_CONCEPTS, EXAMPLES } from "./data.js";
 import Header from "./components/Header/Header.jsx";
-import CoreConcecpt from "./components/CoreConcecpt.jsx";
+import CoreConcept from "./components/CoreConcept.jsx";
 import TabButton from "./components/TabButton.jsx";
 
 function App() {
@@ -31,25 +31,38 @@ function App() {
         <section id="core-concepts">
           <h2>Core concept</h2>
           <ul>
-            <CoreConcecpt {...CORE_CONCEPTS[0]} />
-            <CoreConcecpt {...CORE_CONCEPTS[1]} />
-            <CoreConcecpt {...CORE_CONCEPTS[2]} />
-            <CoreConcecpt
-              title={CORE_CONCEPTS[3].title}
-              description={CORE_CONCEPTS[3].description}
-              image={CORE_CONCEPTS[3].image}
-            />
+            {CORE_CONCEPTS.map((conceptItem) => (
+              <CoreConcept key={conceptItem.title} {...conceptItem}></CoreConcept>
+            ))}
           </ul>
         </section>
         <section id="examples">
           <h2>Examples</h2>
           <menu>
-            <TabButton onSelect={() => handleSelect("components")}>
+            <TabButton
+              onSelect={() => handleSelect("components")}
+              isSelected={selectedTopic === "components"}
+            >
               Components
             </TabButton>
-            <TabButton onSelect={() => handleSelect("jsx")}>JSX</TabButton>
-            <TabButton onSelect={() => handleSelect("props")}>Props</TabButton>
-            <TabButton onSelect={() => handleSelect("state")}>State</TabButton>
+            <TabButton
+              onSelect={() => handleSelect("jsx")}
+              isSelected={selectedTopic === "jsx"}
+            >
+              JSX
+            </TabButton>
+            <TabButton
+              onSelect={() => handleSelect("props")}
+              isSelected={selectedTopic === "props"}
+            >
+              Props
+            </TabButton>
+            <TabButton
+              onSelect={() => handleSelect("state")}
+              isSelected={selectedTopic === "state"}
+            >
+              State
+            </TabButton>
           </menu>
           {tabContent}
         </section>
