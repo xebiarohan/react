@@ -12,7 +12,7 @@ A javascript library for building user interfaces
 
 ```
 # npm 7+, extra double-dash is needed:
-npm create vite@latest my-vue-app -- --template react
+npm create vite@latest my-react-app -- --template react
 ```
 
 3. React uses JSX (HTML in javascript) that is why we need a build tool, that can change this jsx to pure javascript before running it on the browser.

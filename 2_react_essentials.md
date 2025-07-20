@@ -254,6 +254,10 @@ export default function TabButton({children, onSelect}) {
 
 ```
 import {useState} from 'react';
+function Counter() {
+  const [isVisible, setIsVisible] = useState(false);
+  ...
+}
 ```
 
 15. Hook useState
