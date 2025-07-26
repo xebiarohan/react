@@ -73,3 +73,23 @@ function handleArrayUpdate() {
    - If a value is needed by more than 1 component
    - we can keep the state in the closest ansestor component
    - Value can be passed to the components using props.
+
+6. Dont mix 2 setStates
+   - When setting the value of a variable using setVariable method of useState hook, try not to use any other useState variable.
+   - As we dont know what will be the value of that variable when the setVariable method will get called
+
+``` Bad practice
+const [active, setActice] = useState(false);
+const [message, setMessage] = useState('Not active')
+
+handleSubmit() {
+  setMessage(() => {
+    if(active) {
+      return "Active";
+    } else {
+      return "Not active";
+    }
+  });
+}
+
+```
