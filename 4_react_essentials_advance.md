@@ -49,10 +49,10 @@ function onButtonClick() {
 ```
 
 4. Handling object and arrays in setState
-   - Never directly update the values of object and arrays directly in the set method of useState 
+   - Never directly update the values of object and arrays directly in the set method of useState
    - Make a copy of it, update the value and then return it
 
-``` Wrong way
+```Wrong way
 let array = [1,2,3,4];
 const [arr,setArray] = useState(array);
 
@@ -70,6 +70,7 @@ function handleArrayUpdate() {
 ```
 
 5. Lifting state up
+
    - If a value is needed by more than 1 component
    - we can keep the state in the closest ansestor component
    - Value can be passed to the components using props.
@@ -78,7 +79,7 @@ function handleArrayUpdate() {
    - When setting the value of a variable using setVariable method of useState hook, try not to use any other useState variable.
    - As we dont know what will be the value of that variable when the setVariable method will get called
 
-``` Bad practice
+```Bad practice
 const [active, setActice] = useState(false);
 const [message, setMessage] = useState('Not active')
 
@@ -92,4 +93,22 @@ handleSubmit() {
   });
 }
 
+```
+
+7. Example of updating the object state in setter method
+
+```
+  const PLAYERS = {
+  'X': 'PLAYER 1',
+  'O': 'PLAYER 2'
+ }
+  const [players, setPlayers] = useState(PLAYERS);
+  function handlePlayerNameChange(symbol, newName) {
+    setPlayers((prevPlayers) => {
+      return {
+        ...prevPlayers,
+        [symbol]: newName,
+      };
+    });
+  }
 ```

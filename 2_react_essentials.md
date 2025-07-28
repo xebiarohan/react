@@ -162,12 +162,12 @@ import './Header.css';
 ```
 
 9. Folder structure
-   - In assets create component folder
+   - At the level of assets create component folder
    - In component folder create component specific folders like Header, footer, Description, etc
    - In those folders put the jsx and css files
 
 ```
-      assets -> component -> Header
+src --> assets, component --> Header
                               /  \
                              /    \
                             /      \
@@ -268,6 +268,7 @@ function Counter() {
     - Even if we are changing the value of the variable we are using const, because the component is rerendered and the variable is created again.
     - Then on some action like button click we can use the function to set the value of the variable.
     - Default value can be null like useState()
+    - When we set the value using the setter method, it will not immediately change the value, but it schedules the change after the current rendering.
 
 ```
 import { useState } from "react";
