@@ -1,21 +1,46 @@
-export default function UserInput() {
+
+export default function UserInput({userInputs, onInputChange}) {
+
   return (
-    <div id="user-input" className="input-group" >
-      <div >
-        <label>Initial investment</label>
-        <input type="number" />
+    <section id="user-input">
+      <div className="input-group">
+        <p>
+          <label>Initial investment</label>
+          <input
+            type="number"
+            value={userInputs.initialInvestment}
+            onChange={(event) => onInputChange('initialInvestment', event.target.value)}
+          />
+        </p>
 
-        <label>Annual Investment</label>
-        <input type="number" />
+        <p>
+          <label>Annual Investment</label>
+          <input
+            type="number"
+            value={userInputs.annualInvestment}
+            onChange={(event) => onInputChange('annualInvestment', event.target.value)}
+          />
+        </p>
       </div>
-      <div>
-        <label>Expected Return</label>
-        <input type="number"></input>
+      <div className="input-group">
+        <p>
+          <label>Expected Return</label>
+          <input
+            type="number"
+            value={userInputs.expectedReturn}
+            onChange={(event) => onInputChange('expectedReturn', event.target.value)}
+          />
+        </p>
 
-        <label>Duration</label>
-        <input type="number" />
+        <p>
+          <label>Duration</label>
+          <input
+            type="number"
+            value={userInputs.duration}
+            onChange={(event) => onInputChange('duration', event.target.value)}
+          />
+        </p>
       </div>
-
-    </div>
+    </section>
   );
 }
