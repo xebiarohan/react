@@ -82,7 +82,7 @@ import classes from './Header.module.css';
 ```
 
 10. Styled Component
-    - It is a package that you need to install in your application : "npm install styled-components"
+    - Installation : "npm install styled-components"
     - It works like a react component
     - Example if we have a div and we are appling a css class on it
     - We can transform it into a styled component
@@ -154,3 +154,98 @@ return (
 );
 }
 ```
+
+12.  Media queries, nested rules and Pseudo selectors in styled-components
+    - We dont need to convert all the element to syled component, we can do with 1 wrapping component only
+    - And for other components we can pass CSS through the wrapping component
+    - Example if we have img, h1 elements in header element
+    - Using &
+    - For pseudo selectors there should not be any gap between & and :
+
+```
+const StyledHeader = styled.header`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+
+  & img {
+    object-fit: contain;
+    margin-bottom: 2rem;
+    width: 11rem;
+    height: 11rem;
+  }
+
+  & h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-align: center;
+    text-transform: uppercase;
+    color: #9a3412;
+    font-family: "Pacifico", cursive;
+    margin: 0;
+  }
+
+  & {
+    text-align: center;
+    color: #a39191;
+    margin: 0;
+  }
+
+  &:hover {
+   background-color: #9a3412;
+  }
+
+  @media (min-width: 768px) {
+    margin-bottom: 4rem;
+
+    & h1 {
+      font-size: 2.25rem;
+    }
+  }
+`;
+```
+
+13. If these styled components can be used in multiple components, we can put them in seperate jsx class and can import in all those containers
+
+```
+import {styled} from 'styled-containers';
+
+const Input = styled.input`
+   background-color: white;
+`;
+
+export default Input;
+
+```
+
+14. Other way to design styled component
+    - Example Label and Input are tightly coupled
+    - So intead of creating sytled component of each like in the previous example
+    - We can merge them in 1 component
+
+```
+import {styled} from 'styled-component';
+
+const Label = styled.label`
+     color: ${(props) => props.$invalid ? '#f87171': '#6b7280' };
+`;
+
+const Input = styled.input`
+   background-color: ${({$invalid}) => $invalid ? '#fed2d2': '#d1d5db'};
+`;
+
+export default function DefaultInput({label, invalid, ...props}) {
+   return (<p>
+      <Label $invalid={invalid}>{label}</Label>
+      <Input $invalid={invalid} {...props} />
+   </p>);
+}
+```
+
+15. Tailwind CSS
+    - Installation: https://tailwindcss.com/docs/installation/using-vite
+    - Install VS extension: Tailwind CSS IntelliSense
