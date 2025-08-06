@@ -2,39 +2,48 @@ import { useRef, useState } from "react";
 import ResultModal from "./ResultModal.jsx";
 
 export default function TimerChallenge({ title, targetTime }) {
-  const [timerStarted, setTimerStarted] = useState(false);
-  const [timerExpired, setTimerExpired] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(targetTime * 1000);
+
+  const timerIsActive = remainingTime < targetTime * 1000 && remainingTime > 0;
 
   let timer = useRef();
   let dialog = useRef();
 
+  if (remainingTime <= 0) {
+    clearInterval(timer.current);
+    dialog.current.open();
+  }
+
+  function handleReset() {
+    setRemainingTime(targetTime * 1000);
+  }
+
   function handleStart() {
-    setTimerStarted(true);
-    timer.current = setTimeout(() => {
-      setTimerExpired(true);
-      dialog.current.open();
-    }, targetTime * 1000);
+    timer.current = setInterval(() => {
+      setRemainingTime((remainingTime) => remainingTime - 10);
+    }, 10);
   }
 
   function handleStop() {
-    clearTimeout(timer.current);
+    dialog.current.open();
+    clearInterval(timer.current);
   }
 
   return (
     <>
-      <ResultModal ref={dialog} result="lost" targetTime={targetTime} />
+      <ResultModal ref={dialog} remainingTime={remainingTime} targetTime={targetTime} onReset={handleReset}/>
       <section className="challenge">
         <h2>{title}</h2>
         <p className="challenge-time">
           {targetTime} second{targetTime > 1 ? "s" : ""}
         </p>
         <p>
-          <button onClick={timerStarted ? handleStop : handleStart}>
-            {timerStarted ? "Stop" : "Start"} challenge
+          <button onClick={timerIsActive ? handleStop : handleStart}>
+            {timerIsActive ? "Stop" : "Start"} challenge
           </button>
         </p>
-        <p className={timerStarted ? "active" : ""}>
-          {timerStarted ? "Time is running..." : "Timer inactive"}
+        <p className={timerIsActive ? "active" : ""}>
+          {timerIsActive ? "Time is running..." : "Timer inactive"}
         </p>
       </section>
     </>

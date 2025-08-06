@@ -168,3 +168,5 @@ export default function ResultModal({ ref, result, targetTime }) {
 }
 
 ```
+
+7. 
