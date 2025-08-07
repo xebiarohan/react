@@ -169,4 +169,41 @@ export default function ResultModal({ ref, result, targetTime }) {
 
 ```
 
-7. 
+7. Portals
+   - It is used to teleport a html code to a particular place in DOm
+   - Example
+   - The dialogue box we used is nested inside the content of the components
+   - If we want to place it at a specific place in DOM, we can use the portals
+   - Import {createPortal} from react-dom
+   - Wrap the return statement of the component in createPortal
+   - Create portal takes 2 arguments, first the HTML code that we wrapped
+   - Second the element where we want it to render using document.getElementById()
+
+```
+import { createPortal } from "react-dom";
+export default function ResultModal({ ref, remainingTime, targetTime, onReset }) {
+  ...
+
+  return createPortal(
+    <dialog className="result-modal" ref={dialog}>
+      {!userLost && <h2>Your score : {score}</h2>}
+      <form method="dialog" onSubmit={onReset}>
+        <button>Close</button>
+      </form>
+    </dialog>,
+    document.getElementById('modal')
+  );
+}
+
+```
+
+```index.html
+<body>
+    <div id="modal"></div>
+    <div id="content">
+      <div id="root"></div>
+    </div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+
+```
