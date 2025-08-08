@@ -66,3 +66,7 @@
 17. border-<direction>-<size>
     - direction like bottom, left, right, top
     - border-b-10, border-t-4, etc
+
+18. text-<direction>
+    - moves the text in that direction
+    - text-left, text-right, text-bottom, etc
