@@ -48,5 +48,53 @@
 
 4. Don't use useEffect for all side effects
    - As it is an extra execution (executes the useEffect hook after component execution completes)
-   - we don't need useEffect for types of side effects
-   - 
+   - we don't need useEffect for these types of side effects
+     - If a side effect code is already in a condition that cannot run every time we re-evaluate the component in that case we don't need to use useEffect hook
+     - A synchronous code like fetching data from local storage
+
+5. Dependencies in useEffect hook
+   - state or prop values that are used in the useEffect hook.
+
+6. Return function of useEffect
+   - It gets called from the subsequent execution of useEffect or when the component is removed
+   - In the below example we are clearing the timeout before starting another timeout
+
+```
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      onConfirm();
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    }
+  }, []);
+
+```
+
+7. Problem with using function and objects as dependencies of useEffect hook  
+   - A component when re-renders it creates all its function again.
+   - Even if there is nothing changed in the function but after re-rendering the memory location of the function is changed
+   - So the useEffect will be triggered again, that is not what intended.
+
+8. useCallback hook
+   - It is used to wrap the functions 
+   - The wrapped function will not reinitialize if the component re-renders
+   - So that we can pass that function as a dependency to the useEffect hook
+   - Just like the useEffect, it also has a dependency array
+   - So, it will reevaluate the wrapped function if any of the dependency is changed
+
+```
+  const handleRemovePlace = useCallback(function handleRemovePlace() {
+    setPickedPlaces((prevPickedPlaces) =>
+      prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
+    );
+    setModalIsOpen(false);
+
+    const storedIds = JSON.parse(localStorage.getItem("selectedPlaces"));
+    localStorage.setItem(
+      "selectedPlaces",
+      JSON.stringify(storedIds.filter((id) => id !== selectedPlace.current))
+    );
+  }, []);
+```

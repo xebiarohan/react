@@ -130,11 +130,11 @@ export default ResultModal;
 6. UseImperativeHandle example
    - In the previous example we set the ref sent from parent component to the dialog in the child component
    - That is not a good practice
-   - We have to map the ref send from parent component to a local useImparitiveHandler method
+   - We have to map the ref send from parent component to a local useImperativeHandle method
    - It takes 2 arguments
        - ref as first argument
        - a function that exposes all the methods and variable that can be access in parent component using the ref it sends
-   - We can then have a local ref in the child component that we can then call in the useImperativeHandler function
+   - We can then have a local ref in the child component that we can then call in the useImperativeHandle function
    - In parent component we will call the ref.current.open(), that will call the local ref's showModal() method
 
 ```Child component
@@ -147,6 +147,10 @@ export default function ResultModal({ ref, result, targetTime }) {
     return {
       open() {
         dialog.current.showModal();
+      }
+
+      close: () => {
+
       }
     };
   });
