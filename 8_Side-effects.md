@@ -98,3 +98,20 @@
     );
   }, []);
 ```
+
+9. Adding key to any component call
+    - If we want a child component to re-mount (re-render) when some value changes
+    - We can add a key property on it equal to the value on whose change we want to remount the child component
+
+```
+return (
+  <div>
+  ...
+  <QuestionTimer
+    key={activeQuestionIndex}
+    timeout={QUESTION_TIMEOUT}
+    onTimeout={handleSkipAnswer}
+    />
+  </div>
+)
+```
