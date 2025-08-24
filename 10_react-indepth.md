@@ -73,3 +73,21 @@ const initialCountIsPrime = useMemo(() => isPrime(num), [num]);
    - When component re-renders, the new returned HTML code is created in the Virtual DOM and then gets compared to the real DOM element
    - Only the difference between then is applied to real DOM element
    - Virtual DOM is in memory so works faster than the real DOM
+
+6. Key in React
+   - When we have a dynamic list of similar components then we have to pass a key that uniquely identifies each component
+   - when the key value is changed on a component then in Virtual DOM the existing component is scraped and new component is created from scratch.
+
+7. State scheduling and batching
+   - Calling the setter method of the `useState` schedules the state change
+   - Always use the previous value function to update the new state in setter method
+   - If we are calling the setter method multiple times in the same function, behind the scene React does the batching and execute the component only once.
+
+8. `Million JS`
+   - Package to improve the React application speed
+   - Check website for config
+
+```
+npm install million
+
+```
