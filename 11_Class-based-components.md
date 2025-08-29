@@ -76,7 +76,7 @@ class Users extends Component {
 ```
 
 8. Component life cycle methods
-   - componentDidMount(): C
+   - componentDidMount():
      - Called when the component is evaluated and rendered by React
      - Equivalent to `useEffect` hook with empty dependency list
    - componentDidUpdate():
