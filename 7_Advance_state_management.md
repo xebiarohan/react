@@ -1,6 +1,6 @@
 # Advance state management
 
-1. Problem with useState and prop drilling
+1. Problem with `useState` and prop drilling
 
    - In the bigger applications we have lots of state to manage and to share between multiple components
    - Sharing state is difficult to manage using props
@@ -22,14 +22,14 @@
 
 4. Setting the context
    - Create a class in the store folder example shopping-cart-context.jsx
-   - Import createContext from React
-   - Set the placeholder value of context in the createContext method call
+   - Import `createContext` from React
+   - Set the placeholder value of context in the `createContext` method call
    - This value is only used when a component that is not wrapped by the context tries to access the context
    - Set it equal to a variable (name should start with capital letter) and export it.
    - Import the variable in the top most container where we need the context
    - Usually where we are storing the state of the data that we want to set in the context
    - Component that imports it and all its children component will have access to this context
-   - Till React 18 we have to use <Content-name>.Provider but from React 19 we don't have to use Provider
+   - Till React 18 we have to use `<Content-name>.Provider` but from React 19 we don't have to use Provider
    - We have to set a value prop on the context with the default value
    - In the context we have to provide way to read the value as well as to update it
    - Create a variable that holds the value from the state and add a method that calls the setter method of the state
@@ -75,11 +75,11 @@ export const CartContext = createContext({
 5. Using the context value
    - Import the declared context in the component
    - Now we can use 1 of 2 hooks
-     - useContext
-     - use
-   - Difference between both is that 'use' hook is a bit more flexible, we can use it in conditions like if-else
-   - Whereas useContext hook like any other hook needs to be directly declared in the component not inside any condition
-   - 'use' hook available from React 19 or higher
+     - `useContext`
+     - `use`
+   - Difference between both is that `use` hook is a bit more flexible, we can use it in conditions like if-else
+   - Whereas `useContext` hook like any other hook needs to be directly declared in the component not inside any condition
+   - `use` hook available from React 19 or higher
 
 ```
 import {useContext, use} from 'react';
@@ -110,7 +110,7 @@ export default function Cart() {
    - Just like we can use `<CartContext.Provider></CartContext.Provider>` to wrap the producer
    - There is `<CartContext.Consumer></CartContext.Consumer>` to wrap the consumer component
    - It wraps a function, and the argument of that function contains the current value of the context
-   - useContext is the better way to read the context
+   - `useContext` is the better way to read the context
 
 ```
 export default function Product() {
@@ -184,7 +184,7 @@ function App() {
    - `useReducer` takes 2 arguments
      - 1st name of the function that will get called when we dispatch an action using the dispatcher
      - 2nd is the default value of the state (just like in the `useState` hook)
-   - The 1st argument of the useReducer is function that can be declared outside the component
+   - The 1st argument of the `useReducer` is function that can be declared outside the component
    - We can use dispatcher as a function to dispatch different action
      - function takes any argument that can uniquely identify an action
      - in the below example we are sending object (best practice)

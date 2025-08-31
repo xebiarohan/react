@@ -1,6 +1,6 @@
-1. In react we dont need JSX but it is convinient to use it
+1. In react we don't need JSX, but it is convenient to use it
    - In the first example is a simple HTML code that we can write it in JSX file
-   - In the second example we dont need any build process
+   - In the second example we don't need any build process
 
 ```
 <div id="content">
@@ -21,9 +21,9 @@ React.createElement('div',
 
 2. Fragments
    - We must have 1 parent element per component, we cannot have 2 sibling elements at the top
-   - But this wrapping div is redundant
-   - We can repace it with react's Fragment, that will not add an extra div in the deployed code
-   - In latest java this Fragment is also replaced by simple open-close element tag
+   - But this wrapping `div` is redundant
+   - We can replace it with React's Fragment, that will not add an extra `div` in the deployed code
+   - In latest java this `Fragment` is also replaced by simple open-close element tag
 
 ``` correct syntax without Fragment
 return (
@@ -86,8 +86,8 @@ export default function Section({ title, children, ...props }) {
 ```
 4. Multiple JSX slots
    - we can pass multiple JSX values to the child component
-   - In the below example we are sending buttons and tabcontent, 2 JSX codes to the Tabs component
-   - Main point is that we can send any renderable value as a prop, that can be a HTML element, an object, an array, a number, a string, etc.
+   - In the below example we are sending buttons and tab content, 2 JSX codes to the Tabs component
+   - Main point is that we can send any renderable value as a prop, that can be an HTML element, an object, an array, a number, a string, etc.
 
 ```
   let tabContent = <p>Please select a topic</p>;
@@ -123,15 +123,15 @@ export default function Tabs({children, buttons}) {
 
 ```
 
-5. Setting component types dynammically
-   - In the above example we saw in Tabs we are passing buttons to <menu> element
+5. Setting component types dynamically
+   - In the above example we saw in Tabs we are passing buttons to `<menu>` element
    - But we can make it dynamic, instead of just hard coded menu
    - we can get the type as a prop
-   - If the element type is existing HTML element like ul, menu, div, etc we can pass them as a string
-   - In case of custom element type that we created like Tabs, App, etc we have to pass it in curly brackets
-   - example buttonsContainer={Section}
+   - If the element type is existing HTML element like `ul, menu, div`, etc. we can pass them as a string
+   - In case of custom element type that we created like Tabs, App, etc. we have to pass it in curly brackets
+   - example `buttonsContainer={Section}`
    - In the receiving component we have to wrap the value in a local constant and then use that constant as an element
-   - Or we can pass the prop value with the first capital letter like 'ButtonsContainer' then we dont have to create a local variable
+   - Or we can pass the prop value with the first capital letter like `'ButtonsContainer'` then we don't have to create a local variable
 
 ```
 export default function Tabs({ children, buttons, buttonsContainer }) {

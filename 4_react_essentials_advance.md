@@ -1,6 +1,6 @@
 1. We can add markup in index.html
    - There is no rule that says that we have to put everything in the components only
-   - we can use index.html if we have something that does not depend upon state, props, etc
+   - we can use index.html if we have something that does not depend upon state, props, etc.
    - example of index.html
 
 ```
@@ -13,7 +13,7 @@
 ```
 
 2. Update the state based on previous state
-   - DONT directly change the value like shown in first example
+   - DON'T directly change the value like shown in first example
    - in the second approach setter method will automatically provide the current value to the function that we are passing
 
 ```
@@ -29,9 +29,9 @@ function onButtonClick() {
 ```
 
 3. Two-way-binding
-   - we can use the useState to manage the state of the field that we want to change
-   - then we can use the onChange event listener to check the change and can call a function on any change in the field
-   - Function can set the new value in the variable using the set method of the useState
+   - we can use the `useState` to manage the state of the field that we want to change
+   - then we can use the `onChange` event listener to check the change and can call a function on any change in the field
+   - Function can set the new value in the variable using the set method of the `useState`
 
 ```
   const [playerName, setPlayerName] = useState(name);
@@ -48,8 +48,8 @@ function onButtonClick() {
 
 ```
 
-4. Handling object and arrays in setState
-   - Never directly update the values of object and arrays directly in the set method of useState
+4. Handling object and arrays in `setState`
+   - Never directly update the values of object and arrays directly in the set method of `useState`
    - Make a copy of it, update the value and then return it
 
 ```Wrong way
@@ -72,12 +72,12 @@ function handleArrayUpdate() {
 5. Lifting state up
 
    - If a value is needed by more than 1 component
-   - we can keep the state in the closest ansestor component
+   - we can keep the state in the closest ancestor component
    - Value can be passed to the components using props.
 
-6. Dont mix 2 setStates
-   - When setting the value of a variable using setVariable method of useState hook, try not to use any other useState variable.
-   - As we dont know what will be the value of that variable when the setVariable method will get called
+6. Don't mix 2 `setState`
+   - When setting the value of a variable using `setVariable` method of `useState` hook, try not to use any other `useState` variable.
+   - As we don't know what will be the value of that variable when the `setVariable` method will get called
 
 ```Bad practice
 const [active, setActice] = useState(false);
