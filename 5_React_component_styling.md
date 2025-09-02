@@ -1,24 +1,22 @@
-1. First way is to add all the css in the index.css file and then import it in the main.jsx
+1. First way is to add all the CSS in the index.css file and then import it in the main.jsx
 
 ```
 import './index.css';
 ```
 
-2. We can split this css file and can create more css files component specific like Header.css and can import it in Header component
+2. We can split this CSS file and can create more component specific CSS files like Header.css and can import it in Header component
 
-3. Advantages of vanilla CSS
-
+3. Advantages of vanilla CSS.
    - CSS code decoupled from JSX code
 
 4. Disadvantages
-
    - CSS rules are not scoped to a component, but to the whole application
 
 5. Inline style (second way)
    - We can pass an object dynamically
    - First {} is for the dynamic value
    - Second {} is of the object
-   - If there is a hyphen in the key then we have to wrap it in quotes or use camelcase
+   - If there is a hyphen in the key then we have to wrap it in quotes or use camel-case
 
 ```
 <p style={{
@@ -38,7 +36,7 @@ import './index.css';
 6. Advantages and Disadvantages
 
    - Advantage
-     - Stlyes only affect the element on which we are adding the style
+     - Only affect the element on which we are adding the style
      - We can add style dynamically based on condition
    - Disadvantage
      - Cannot reuse it
@@ -55,7 +53,7 @@ import './index.css';
 
 8. Dynamic CSS classes
    - Same as ternary operator
-   - In second example lable css class is always applied, where as the invalid class is applied based on the condition
+   - In second example label CSS class is always applied, whereas the invalid class is applied based on the condition
 
 ```
 <p className={textIsInvalid ? 'invalid': ''}>{text}</p>
@@ -65,10 +63,10 @@ import './index.css';
 
 9. CSS Modules
    - Vanilla CSS with file-specific scope
-   - Need to update the css class name example from Header.css to Header.module.css
+   - Need to update the CSS class name example from Header.css to Header.module.css
    - Import needs to be changed as shown
-   - and classes need to used with the 'classes' prefix (it can be of our choice)
-   - In the example 'paragraph' is the name of the css class that we are applying on the '<p>' tag
+   - and classes need to be used with the 'classes' prefix (name can be of our choice)
+   - In the example 'paragraph' is the name of the CSS class that we are applying on the '<p>' tag
 
 ```
 import './Header.css';
@@ -81,12 +79,12 @@ import classes from './Header.module.css';
 
 ```
 
-10. Styled Component
-    - Installation : "npm install styled-components"
-    - It works like a react component
-    - Example if we have a div and we are appling a css class on it
+10.  Styled Component
+    - Installation : `npm install styled-components`
+    - It works like a React component
+    - Example if we have a `div`, and we are applying a CSS class on it,
     - We can transform it into a styled component
-    - It forwards all the classes that we apply to it using className prop
+    - It forwards all the classes that we apply to it using `className` prop
 
 ```
 import {Styled} from 'styled-components';
@@ -113,11 +111,11 @@ export default function App() {
 }
 ```
 
-11. Dynamic classes using sytled-components
-    - We can set prop on the element, in the example prop name is invalid and emailNotValid is a boolean
+11. Dynamic classes using `sytled-components`
+    - We can set prop on the element, in the example prop name is invalid and `emailNotValid` is a boolean.
     - Props can then be received by the functions inside the styled component
     - We can also use destructuring to directly write the props names instead of 'props'.
-    - It is a common convention to use $ infront of props to be passed to styled component
+    - It is a common convention to use `$` in-front of props to be passed to styled component
 
 ```
 
@@ -128,7 +126,7 @@ const Label = styled.label`
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: ${(props) => props.$invalid ? '#f87171': '#6b7280' } 
+  color: ${(props) => props.$invalid ? '#f87171': '#6b7280' }
 
 `;
 
@@ -155,11 +153,11 @@ return (
 }
 ```
 
-12.  Media queries, nested rules and Pseudo selectors in styled-components
-    - We dont need to convert all the element to syled component, we can do with 1 wrapping component only
+12. Media queries, nested rules and Pseudo selectors in styled-components
+    - We don't need to convert all the element to `syled-component`, we can do with 1 wrapping component only
     - And for other components we can pass CSS through the wrapping component
-    - Example if we have img, h1 elements in header element
-    - Using &
+    - Example if we have `img`, `h1` elements in header element
+    - Using & in front of all inner elements with a space between them
     - For pseudo selectors there should not be any gap between & and :
 
 ```
@@ -209,7 +207,7 @@ const StyledHeader = styled.header`
 `;
 ```
 
-13. If these styled components can be used in multiple components, we can put them in seperate jsx class and can import in all those containers
+13. If same `styled components` CSS can be used in multiple components, we can put them in separate JSX class and can import in all those containers
 
 ```
 import {styled} from 'styled-containers';
@@ -224,7 +222,7 @@ export default Input;
 
 14. Other way to design styled component
     - Example Label and Input are tightly coupled
-    - So intead of creating sytled component of each like in the previous example
+    - So instead of creating `sytled component` of each like in the previous example
     - We can merge them in 1 component
 
 ```
@@ -248,4 +246,4 @@ export default function DefaultInput({label, invalid, ...props}) {
 
 15. Tailwind CSS
     - Installation: https://tailwindcss.com/docs/installation/using-vite
-    - Install VS extension: Tailwind CSS IntelliSense
+    - Install VS extension: Tailwind CSS Intellisense

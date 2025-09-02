@@ -1,10 +1,10 @@
 1. Refs introduction
    - Used to get the reference of DOM elements
-   - Need to import 'useRef' from react
-   - we have to create a variable using the useRef() method (const playerName = useRef();)
-   - Add the ref prop to the element to which you want to map (ref ={playerName})
-   - then the ref variable (playerName in this example) will have access to all the properties of that element
-   - while accessing the value we have to use variableName.current.propertyName to access the properties
+   - Need to import `useRef` from React
+   - First have to create a variable using the useRef() method.
+   - Add the ref prop to the element to which we want to map (ref ={playerName})
+   - Then the ref variable (`playerName` in this example) will have access to all the properties of that element
+   - While accessing the value we have to use `variableName.current.propertyName` to access the properties
 
 ```
 import { useState, useRef } from "react";
@@ -32,18 +32,18 @@ export default function Player() {
 }
 ```
 
-2. Refs are not for manupulating the DOM elements, it is usually used for reading element values.
+1. Refs are not for manipulating the DOM elements, it is usually used for reading element values.
 
-3. Difference between Refs and state
+2. Difference between Refs and state
 
-   - In the first render cycle we dont have the ref connection to element
-   - When Refs changes the component function does not rerenders
+   - In the first render cycle we don't have the ref connection to element
+   - When Refs change the component function does not re-render
    - Refs connects element to value from the second render cycle.
    - State should be used for the values that is directly renders on the UI
 
-4. Refs for internal variable management
+3. Refs for internal variable management
    - Refs can be used for local variable management
-   - Ref value will not reinitialize when a component re-renders (like on updation of state value)
+   - Ref value will not reinitialize when a component re-renders (like on update of state value)
 
 ```
   let timer = useRef();
@@ -66,7 +66,7 @@ export default function Player() {
    - we have a component where we have to open a dialog box on some action
    - Dialogue box is in different component
    - we need to attach a ref to the dialog box, so that on some action in the parent component we can open it.
-   - Before React 19 we have to use forwardRef to handle the ref from parent component
+   - Before React 19 we have to use `forwardRef` to handle the ref from parent component
 
 ```parent component
 let dialog = useRef();
@@ -127,14 +127,14 @@ export default ResultModal;
 
 ```
 
-6. UseImperativeHandle example
+6. `UseImperativeHandle` hook
    - In the previous example we set the ref sent from parent component to the dialog in the child component
    - That is not a good practice
-   - We have to map the ref send from parent component to a local useImperativeHandle method
+   - We have to map the ref send from parent component to a local `useImperativeHandle` method
    - It takes 2 arguments
        - ref as first argument
        - a function that exposes all the methods and variable that can be access in parent component using the ref it sends
-   - We can then have a local ref in the child component that we can then call in the useImperativeHandle function
+   - We can then have a local ref in the child component that we can then call in the `useImperativeHandle` function
    - In parent component we will call the ref.current.open(), that will call the local ref's showModal() method
 
 ```Child component
@@ -174,12 +174,12 @@ export default function ResultModal({ ref, result, targetTime }) {
 ```
 
 7. Portals
-   - It is used to teleport a html code to a particular place in DOm
+   - It is used to teleport an HTML code to a particular place in DOM
    - Example
    - The dialogue box we used is nested inside the content of the components
    - If we want to place it at a specific place in DOM, we can use the portals
-   - Import {createPortal} from react-dom
-   - Wrap the return statement of the component in createPortal
+   - Import {createPortal} from `react-dom`
+   - Wrap the return statement of the component in `createPortal`.
    - Create portal takes 2 arguments, first the HTML code that we wrapped
    - Second the element where we want it to render using document.getElementById()
 
