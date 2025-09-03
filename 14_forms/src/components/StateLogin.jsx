@@ -1,11 +1,12 @@
 import { useState } from "react";
 
 export default function StateLogin(event) {
-
   const [enteredValues, setEnteredValues] = useState({
     email: "",
     password: "",
   });
+
+  const emailIsInvalid = enteredValues.email !== '' && !enteredValues.email.includes('@');
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -14,9 +15,9 @@ export default function StateLogin(event) {
   }
 
   function handleInputChange(identifier, event) {
-    setEnteredValues(prevState => ({
+    setEnteredValues((prevState) => ({
       ...prevState,
-      [identifier]: event.target.value
+      [identifier]: event.target.value,
     }));
   }
 
@@ -31,9 +32,10 @@ export default function StateLogin(event) {
             id="email"
             type="email"
             name="email"
-            onChange={(event) => handleInputChange('email', event)}
+            onChange={(event) => handleInputChange("email", event)}
             value={enteredValues.email}
           />
+          <div className="control-error">{emailIsInvalid && <p>Please enter valid Email Id</p>}</div>
         </div>
 
         <div className="control no-margin">
@@ -42,7 +44,7 @@ export default function StateLogin(event) {
             id="password"
             type="password"
             name="password"
-            onChange={(event) => handleInputChange('password', event)}
+            onChange={(event) => handleInputChange("password", event)}
             value={enteredValues.password}
           />
         </div>
