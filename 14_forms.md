@@ -126,4 +126,10 @@ function handleSubmit(event) {
   event.target.reset();
 ```
 
-8. 
+8. HTML validations
+   - we can use the HTML default validation like `required, minLength, maxLength, etc`
+
+9. Custom validation  
+   - We can add custom validation along with default HTML validations
+
+10. We can also use 3rd party library as well for form handling like react hook form, `Formik`.

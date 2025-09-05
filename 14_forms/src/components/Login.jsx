@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 export default function Login(event) {
   const emailRef = useRef();
