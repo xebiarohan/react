@@ -71,3 +71,95 @@
   </form>
 
 ```
+
+2. Override reset behavior
+    - By default when we click on submit button, the form resets
+    - If we have an error in 1 field, and we click submit, the form resets and all the other valid values are lost
+    - On reset the form is reset to default value.
+    - Default value is null
+    - So if we can store the values that user entered and set it equal to the default value of input fields.
+    - We can store the value entered by the user in the `formState` returned by the `useActionState` hook
+    - In case of error the `formState` can return an object containing errors as well as the values entered by the user
+
+```
+  function signupAction(prevFormState, formData) {
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirm-password");
+    const firstName = formData.get("first-name");
+    const lastName = formData.get("last-name");
+    const role = formData.get("role");
+    const terms = formData.get("terms");
+    const acquisitionChannel = formData.getAll("acquisition");
+
+    let errors = [];
+
+    if (!isEmail(email)) {
+      errors.push("Invalid email address");
+    }
+
+    // Other validations on other fields
+
+    if (errors.length > 0) {
+      return {
+        errors,
+        enteredValues: {
+          email,
+          password,
+          confirmPassword,
+          firstName,
+          lastName,
+          role,
+          acquisitionChannel,
+          terms,
+        },
+      };
+    }
+
+    return { errors: null };
+  }
+
+```
+
+```
+  return (
+    <form action={formAction}>
+      <h2>Welcome on board!</h2>
+      <p>We just need a little bit of data from you to get you started 🚀</p>
+
+      <div className="control">
+        <label htmlFor="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          defaultValue={formState.enteredValues?.email}
+        />
+      </div>
+
+      <div className="control-row">
+        <div className="control">
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            defaultValue={formState.enteredValues?.password}
+          />
+        </div>
+        ...
+    </form>
+  );
+
+```
+
+3. The action function that the `useActionState` hook takes as a first parameter can be sync or async
+
+```
+  async function signupAction(prevFormState, formAction) {
+    await someserviceCall();
+
+    return new-derived-state;
+  }
+
+```
