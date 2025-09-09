@@ -163,3 +163,129 @@
   }
 
 ```
+
+4. When we click on form submit, the form sends a request to the backend and that can take time
+   - During that time the Submit button is still enabled
+   - User can click on it again
+   - So we have to disable the button when form submission is in pending state
+   - We can use the 3rd return value from the `useActionState` hook
+   - OR we can use a new hook `useFormStatus`
+
+5. `useFromStatus` hook
+   - It gets imported from `react-dom`.
+   - We cannot add this hook in the same component where we have the form
+   - We have to use it in a child component
+   - Best practice is to create a separate component for the `Submit` button
+   - And then use this hook in that component
+   - It returns multiple values like data, pending, action, etc
+   - Pending is the most used value
+
+```
+export default function Submit() {
+  const { pending } = useFormStatus();
+
+  return (
+    <p className="actions">
+      <button type="submit" disabled={pending}>
+        {pending ? 'Submitting...' : 'Submit'}
+      </button>
+    </p>
+  );
+}
+
+```
+
+6. Registering `formAction` on multiple button in a form
+   - If we have 1 submit button in a form then we can map the `formAction` in the form element using action attribute
+   - If we have multiple buttons that we have to map then we can use `formAction` attribute on button element itself,
+   - In this example below we are not using the `useActionState`, but we can use it if required
+
+```
+  function upvoteAction(formData) {
+    console.log('Upvote');
+  }
+
+  function downvoteAction(formData) {
+    console.log('Downvote');
+  }
+
+
+<button formAction={upvoteAction}></button>
+
+<button formAction={downvoteAction}></button>
+
+```
+
+7. Need for `useOptimistic` hook 
+   - Sometimes we do some action from form (like adding a value in database), and it takes some time
+   - On finishing on that task we update some value on the HMI like increasing a counter
+   - One way is to let the action complete and, then it will update the counter
+   - Second we can be optimistic that the action will be successful, so we can update the counter first
+   - And then check once the form action finishes
+   - So this hook gives us a temporary value when the form is in Pending state
+
+8. Syntax of `useOptimistic` hook
+   - First argument of the hook is the parameter for that we want to set value optimistically
+   - Second argument is a function that can take multiple values with first values fixed as previous value of the value that you want to set optimistically
+   - Hook will return an array of exactly 2 values 
+     - first is the updated optimistic value that we can use 
+     - Second is the function that we can call to execute the function that we passed as the second argument to the hook
+     - The argument we pass to the setter function will be passed to that function plus the first argument of that function is fixed and passed by react.
+     - We can pass as many arguments as we want to this function
+   - The value returned by this is only used when the form is in pending state.
+
+```
+  const [optimisticVotes, setVotesOptimistically] = useOptimistic(votes, (prevVotes, mode) =>
+    mode === "up" ? prevVotes + 1 : prevVotes - 1
+  );
+```
+
+
+```Complete example
+export function Opinion({ opinion: { id, title, body, userName, votes } }) {
+  const { upvoteOpinion, downvoteOpinion } = use(OpinionsContext);
+  const [upvoteFormState, upvoteFormAction, upvotePending] =
+    useActionState(upvoteAction);
+  const [downvoteFormState, downvoteFormAction, downvotePending] =
+    useActionState(downvoteAction);
+
+  const [optimisticVotes, setVotesOptimistically] = useOptimistic(votes, (prevVotes, mode) =>
+    mode === "up" ? prevVotes + 1 : prevVotes - 1
+  );
+
+  async function upvoteAction() {
+    setVotesOptimistically('up');
+    await upvoteOpinion(id);
+  }
+
+  async function downvoteAction() {
+    setVotesOptimistically('down');
+    await downvoteOpinion(id);
+  }
+
+  return (
+    <article>
+      <header>
+        <h3>{title}</h3>
+        <p>Shared by {userName}</p>
+      </header>
+      <p>{body}</p>
+      <form className="votes">
+        <button
+          formAction={upvoteFormAction}
+          disabled={upvotePending || downvotePending}
+        >UP </button>
+
+        <span>{optimisticVotes}</span>
+
+        <button
+          formAction={downvoteFormAction}
+          disabled={upvotePending || downvotePending}
+        >DOWN </button>
+      </form>
+    </article>
+  );
+}
+
+
+```
