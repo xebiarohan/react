@@ -32,7 +32,8 @@ export default function Cart() {
   }
 
   return (
-    <Modal className="cart" open={userProgressContext.progress === "Cart"}>
+    <Modal className="cart" open={userProgressContext.progress === "Cart"} 
+    closeFunction={ userProgressContext.progress === "Cart" ? handleCloseCart : null}>
       <h2>Your Cart</h2>
       <ul>
         {cartContext.items.map((item) => (
@@ -49,7 +50,9 @@ export default function Cart() {
         <Button textOnly onClick={handleCloseCart}>
           Close
         </Button>
-        <Button onClick={handleOpenCheckout}>Go to Checkout</Button>
+        {cartContext.items.length > 0 && (
+          <Button onClick={handleOpenCheckout}>Go to Checkout</Button>
+        )}
       </p>
     </Modal>
   );
