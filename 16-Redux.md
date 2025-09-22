@@ -18,3 +18,39 @@
    - Reducer function is used to update the state in the store
    - Components triggers some actions.
    - Actions are forwarded to the reducer function by Redux
+
+4. A reducer function is a pure function that takes 2 arguments
+    - old state
+    - Dispatched action
+  - And it outputs the new state.
+  - It is called by the redux library when ever a component triggers an action
+
+5. Example
+   - Here we have a store which takes a reducer function.
+   - Then we subscribe to the store using `store.subscribe` and pass a function to it
+   - this `counterSubscriber` function will get called when the reducer function changes the state of the store.
+   - Then we can dispatch an action using the `store.dispatch` function, that will be passed to the reducer function by redux as second argument.
+
+```
+   const redux = require("redux");
+
+   const counterReducer = (state = { counter: 0 }, action) => {
+   return {
+      counter: state.counter + 1,
+   };
+   };
+
+   const store = redux.createStore(counterReducer);
+
+   const counterSubsriber = () => {
+   const latestState = store.getState();
+   console.log(latestState);
+   };
+
+   store.subscribe(counterSubsriber);
+
+
+   store.dispatch({type: 'increment'});
+
+
+```
