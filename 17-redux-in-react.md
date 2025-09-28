@@ -261,3 +261,167 @@ const store = configureStore({
 
 export default store;
 ```
+
+12. Dispatching event in redux toolkit
+    - First we need to export the slice actions that will be used to dispatch actions
+    - Then we can import it in the component from where we have to dispatch actions
+    - Here also we use `useDispatcher` hook to dispatch the actions
+    - In `useDispatcher` we call different methods that we defined in the reducer of `createSlice`
+    - `useSelector` hook is also changed, now we have to call `state.<slice name>.value`
+    - Like we have slice name `counter` ( in the reducer of configure store) so we will extract the state using `state.counter.showCounter`.
+
+```
+const store = configureStore({
+  reducer: { counter : counterSlice.reducer }
+});
+
+
+export const counterActions = counterSlice.actions;
+export default store;
+```
+
+```
+import { useSelector, useDispatch } from "react-redux";
+import { counterActions } from "../store/index";
+import classes from "./Counter.module.css";
+
+const Counter = () => {
+  const dispatch = useDispatch();
+  const counter = useSelector((state) => state.counter.counter);
+  const showCounter = useSelector((state) => state.counter.showCounter);
+
+  const incrementHandler = () => {
+    dispatch(counterActions.increment());
+  };
+
+  const incrementSpecificValueHandler = () => {
+    dispatch(counterActions.increase(5));
+    // it will dispatch { "name": "SOME_UNIQUE_STRING", payload: 10}
+  };
+
+  const toggleCounterHandler = () => {
+    dispatch(counterActions.toggleCounter());
+  };
+
+  return (
+    <main className={classes.counter}>
+      <h1>Redux Counter</h1>
+      {showCounter && <div className={classes.value}>{counter}</div>}
+      <div>
+        <button onClick={incrementHandler}>Increment</button>
+        <button onClick={incrementSpecificValueHandler}>Increment by 5</button>
+      </div>
+      <button onClick={toggleCounterHandler}>Toggle Counter</button>
+    </main>
+  );
+};
+
+export default Counter;
+
+```
+
+13. Multiple Slice example
+
+```
+const initialCounterState = {
+  counter: 0,
+  showCounter: true,
+};
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: initialCounterState,
+  reducers: {
+    increment(state) {
+      state.counter++;
+    },
+    decrement(state) {
+      state.counter--;
+    },
+    increase(state, action) {
+      state.counter += action.payload;
+    },
+    decrease(state, action) {
+      state.counter -= action.payload;
+    },
+    toggleCounter(state) {
+      state.showCounter = !state.showCounter;
+    },
+  },
+});
+
+const initialiAuthState = {
+  isAuthenticated: false,
+};
+
+const authSlice = createSlice({
+  name: "authentication",
+  initialState: initialiAuthState,
+  reducers: {
+    login: (state) => {
+      state.isAuthenticated = true;
+    },
+    logout: (state) => {
+      state.isAuthenticated = false;
+    },
+  },
+});
+
+const store = configureStore({
+  reducer: {
+    counter: counterSlice.reducer,
+    auth: authSlice.reducer
+  },
+});
+
+export const counterActions = counterSlice.actions;
+export const authActions = authSlice.actions;
+export default store;
+
+```
+
+14. We can create separate files for each Slice and keep the store at 1 place
+    - we can export the actions from each slice file
+    - Export the reducer as the default export
+
+```
+import { createSlice } from "@reduxjs/toolkit";
+
+
+const initialiAuthState = {
+  isAuthenticated: false,
+};
+
+const authSlice = createSlice({
+  name: "authentication",
+  initialState: initialiAuthState,
+  reducers: {
+    login: (state) => {
+      state.isAuthenticated = true;
+    },
+    logout: (state) => {
+      state.isAuthenticated = false;
+    },
+  },
+});
+
+export const authActions = authSlice.actions;
+export default authSlice.reducer;
+```
+
+```
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./counter-slice";
+import authReducer from "./auth-slice";
+
+
+const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+    auth: authReducer
+  },
+});
+
+export default store;
+
+```
