@@ -63,7 +63,7 @@ export default App;
 
 4. Creating link to navigate between pages
    - Import `Link` from `react-router-dom`
-  
+
 ```
       <p>
         Go to <Link to="/products">the products list</Link>
@@ -74,7 +74,6 @@ export default App;
    - We can have a parent page and then specific routes of that page
    - Here the children links can only be called from the `BasePage` component and its children
    - We need to define the `<Outlet>` where these component will be rendered
-
 
 ```
 const router = createBrowserRouter([
@@ -105,8 +104,8 @@ export default function RootLayout() {
 ```
 
 6. Setting error page
-    - Use `errorElement` to set the page to load in case of an error
-    - Mapped to the top most route "/"
+   - Use `errorElement` to set the page to load in case of an error
+   - Mapped to the top most route "/"
 
 ```
 const router = createBrowserRouter([
@@ -120,4 +119,82 @@ const router = createBrowserRouter([
     ],
   }
 ]);
+```
+
+7. `NavLink`
+   - We can use `NavLink` instead of Link to create links
+   - It provides a better way to set the css classes
+   - `className` attribute take a function that should return the class to implement on the link
+   - function takes multiple parameter, one of them is `isActive`.
+   - Another property is `end`, which specifies only consider this link active if the link ends with the path mentioned in the `to` property.
+   - We get the same function for the inline styles as well
+
+```
+<NavLink
+  to="/"
+  className={({isActive}) => isActive ? classes.active: undefined}
+  end={true}
+  >Home
+  </NavLink>
+```
+
+8. Navigation Programmatically
+   - Like if a form is submitted, then we want to move to a different page.
+   - We need to import `useNavigate` from `react-router-dom`
+   - calling it will give us a function that can be used to navigate to different routes.
+
+```
+import { useNavigate } from "react-router-dom";
+
+export default function Home() {
+
+  const navigate = useNavigate();
+
+  function navigateHandler() {
+    navigate("/products");
+  }
+
+  return (
+    <>
+      <p>
+        <button type="button" onClick={navigateHandler}>Navigate</button>
+      </p>
+    </>
+  );
+}
+```
+
+9. Dynamic routes
+   - We can use colons `:` to make a path segment dynamic
+   - we can use `useParams` to fetch the value of dynamic path in its mapped component
+   - `useParams` returns a list of dynamic segments of the link.
+
+```
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/products", element: <Products /> },
+      {path: "/products/:productId", element: <ProductDetail />}
+    ],
+  }
+])
+
+```
+
+```
+import { useParams } from "react-router-dom";
+
+export default function ProductDetail() {
+  const params = useParams();
+
+  return (
+    <>
+      <h2>{params.productId}</h2>
+    </>
+  );
+}
 ```
