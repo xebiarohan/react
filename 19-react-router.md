@@ -198,3 +198,57 @@ export default function ProductDetail() {
   );
 }
 ```
+
+10. Relative and absolute paths
+    - All paths that we define are the absolute paths in the `createBrowserRouter`
+    - All paths starting with `/` are absolute paths
+    - It's better to use relative path in the children section when the parent path is anything other than `/`
+    - To make a path relative, omit the first `/`.
+    - The same goes for programmatic links (`NavLink and Link`), remove the first `/`
+
+```
+const router = createBrowserRouter([
+  {
+    path: "/root",
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { path: "", element: <Home /> },
+      { path: "products", element: <Products /> },
+      {path: "products/:productId", element: <ProductDetail />}
+    ],
+  }
+]);
+```
+
+11. Relative path.
+    - Path can be relative to 2 things
+      - to the `route` definition defined in the `createBrowserRouter`
+      - To the `path` in the browser
+      - Using `..` takes it 1 step back based on the relative value
+
+```
+  <Link to=".." relative="path">Back</Link>
+```
+
+12. Index route
+    - In the children routes, there is always a route that we want to load by default
+    - In our example it is Home page
+    - One way it to set the path value as empty string ""
+    - Other way is to make it index route
+
+```
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { index:true element: <Home /> },
+      { path: "products", element: <Products /> },
+      {path: "products/:productId", element: <ProductDetail />}
+    ],
+  }
+]);
+
+```
