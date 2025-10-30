@@ -2,7 +2,7 @@ import { redirect } from "react-router-dom";
 import EventForm from "../components/EventForm";
 
 export default function NewEventPage() {
-  return <EventForm />;
+  return <EventForm method="post"/>;
 }
 
 export async function action({ request, params }) {
@@ -22,6 +22,10 @@ export async function action({ request, params }) {
     },
     body: JSON.stringify(eventData),
   });
+
+  if(response.status === 422) {
+    return response;
+  }
 
   if (!response.ok) {
     throw new Response(JSON.stringify({ message: "Could not save event!" }), {
