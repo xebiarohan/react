@@ -81,7 +81,6 @@ export async function action({request, params}) {
     });
   }
 
-  console.log('Redirecting....');
   return redirect("/");
 
 }
