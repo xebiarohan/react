@@ -116,7 +116,7 @@ useQuery({
    - Object contains the 
      - `queryKey` array, 
      - signal object that is used to terminate the request in case we move to different page
-     - and any data that we want to pass like seachTerm in the below example
+     - and any data that we want to pass like `searchTerm` in the below example
 
 ```
 import { fetchEvents } from "../../util/http";
@@ -145,4 +145,41 @@ export async function fetchEvents({signal, searchTerm }) {
 
   ...
 }
+```
+
+9. Enabling and disabling query
+    - we can disable and enable the query based on some parameter
+    - Example for search bar, at the startup we don't want to search with empty string, so at that time we can disable it
+
+```
+useQuery({
+  queryKey: ['events',{search: searchTerm}],
+  queryFn: ({signal}) => fetchEvents(signal, searchTerm),
+  enabled: searchTerm !== undefined
+})
+
+```
+
+10. Difference between `isLoading` and `isPending`
+    - `isLoading` returns true only when the query is executed and waiting for the response
+    - `isPending` returns true when the query is executed and waiting for the response as well as when the query is disabled, waiting for it to be enabled
+    - It's better to use `isLoading`
+
+11. `useMutation`
+    - `useMutation` is better optimized for post requests as compare to `useQuery`
+    - We have same configuration object in the `useMutation` that takes `mutationFn`
+    - we usually don't use `mutationKey` as we don't want to cache the post request
+    - `useMutation` unlike `useQuery` does not send request on its own, it returns an object that contains mutate property.
+    - Mutate property is used to send the request
+    - In the below example the object passed to the mutate function will be passed to the `createNewEvent` function while calling it
+
+```
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: createNewEvent,
+  });
+
+  function handleSubmit(formData) {
+    mutate({ event: formData });
+  }
+
 ```
