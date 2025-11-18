@@ -183,3 +183,57 @@ useQuery({
   }
 
 ```
+
+12. Invalidating queries in `useMutation`
+    - Once the post request is sent from the mutation function, we can perform some action like redirecting to another page, etc.
+    - For that we have a specific property in `useMutation` hook `onSuccess`, that get called when the mutation function completes.
+    - Here we can use navigate to redirect to different page
+    - Other thing we can do is to invalidate the other queries because using post we just updated the data, and we want `useQuery` hook to fetch the data again.
+    - To force refetching we have to invalidate the queries
+    - So we can use `QueryClient` to invalidate the queries
+    - In App.js we defined the `QueryClient`, mode it to a class from where we can import it in different components
+    - Import it in the component and in App.js
+    - then call `invalidateQueries` on `queryClient` and pass the query key to it
+    - All the queries that contain this query will get invalidated
+    - It's not important to define exact `queryKey` of a `useQuery` hook
+    - We can define any 1 value and all the `useQuery` containing that query gets invalidated
+    - If we want to pass the exact same `queryKey` we can do that and set the `exact` value to true
+
+
+```http.js
+  export const queryClient = new QueryClient();
+```
+
+```
+  import { queryClient } from "../../util/http.js";
+
+  export default function NewEvent() {
+    const navigate = useNavigate();
+
+    const { mutate, isPending, isError, error } = useMutation({
+      mutationFn: createNewEvent,
+      onSuccess: () => {
+        queryClient.invalidateQueries({queryKey: ["events"], exact: false});
+        navigate('/events');
+      }
+    });
+
+    ...
+
+  }
+
+```
+
+```App.js
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
+}
+
+export default App;
+
+```
