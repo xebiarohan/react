@@ -101,6 +101,7 @@ export default function Login(event) {
    - Or we can get the whole form object using the `formData.entries()` method
    - Multiple inputs with same name (like in case of checkbox) does not come in `formData.entries`. We have to get the value using `formData.getAll()`
    - Then we have to add it in the `FormData` object
+   - We have to make button of type submit and reset then only the `onSubmit` and `onReset` on the form element will get called.
 
 ```
 function handleSubmit(event) {
@@ -115,6 +116,17 @@ function handleSubmit(event) {
 
   data.acquisition = acquisitionChannel;
 }
+
+return (
+ <form onSubmit={handleFormSubmission} onReset={handleReset}>
+    ...
+   
+    <p className="form-actions">
+           <button className="button button-flat" type="reset">Reset</button>
+           <button className="button" type="submit">Login</button>
+    </p>
+</form>
+);
 
 ```
 
