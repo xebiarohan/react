@@ -101,7 +101,7 @@ export default function Login(event) {
    - Or we can get the whole form object using the `formData.entries()` method
    - Multiple inputs with same name (like in case of checkbox) does not come in `formData.entries`. We have to get the value using `formData.getAll()`
    - Then we have to add it in the `FormData` object
-   - We have to make button of type submit and reset then only the `onSubmit` and `onReset` on the form element will get called.
+   - We have to make button of type submit then only the `onSubmit` on the form element will get called.
 
 ```
 function handleSubmit(event) {
@@ -132,10 +132,10 @@ return (
 
 7. Resetting a form
    - One way it to set the type of the Reset button equal to `reset`.
-   - Better way is to call the `reset()` function on the `event.target`
+   - Better way is to call the `reset()` function on the `event.target.form`
 
 ```
-  event.target.reset();
+  event.target.form.reset();
 ```
 
 8. HTML validations
