@@ -32,16 +32,16 @@ export default function Player() {
 }
 ```
 
-1. Refs are not for manipulating the DOM elements, it is usually used for reading element values.
+2. Refs are not for manipulating the DOM elements, it is usually used for reading element values.
 
-2. Difference between Refs and state
+3. Difference between Refs and state
 
    - In the first render cycle we don't have the ref connection to element
    - When Refs change the component function does not re-render
    - Refs connects element to value from the second render cycle.
    - State should be used for the values that is directly renders on the UI
 
-3. Refs for internal variable management
+4. Refs for internal variable management
    - Refs can be used for local variable management
    - Ref value will not reinitialize when a component re-renders (like on update of state value)
 
