@@ -131,7 +131,9 @@ return (
 ```
 
 7. Resetting a form
-   - One way it to set the type of the Reset button equal to `reset`.
+   - One way it to set the type of the Reset button equal to `reset`. It is used when we are not storing the state of the form elements using `useState`
+       - As reset will just clear the form fields but does not change the value in the stored element in `useState` hook
+   - Other way is to map a function to a button, set the type of button to `button` and call the function. In that function we can call setter method of `useState` hook.
    - Better way is to call the `reset()` function on the `event.target.form`
 
 ```
