@@ -22,7 +22,7 @@
   </form>
 ```
 
-1. `useActionState` react hook
+3. `useActionState` react hook
    - Used to manage the form in react
    - It takes 2 arguments, 
      - 1st the action function that is mapped to the form action
@@ -72,7 +72,7 @@
 
 ```
 
-2. Override reset behavior
+4. Override reset behavior
     - By default when we click on submit button, the form resets
     - If we have an error in 1 field, and we click submit, the form resets and all the other valid values are lost
     - On reset the form is reset to default value.
@@ -153,7 +153,7 @@
 
 ```
 
-3. The action function that the `useActionState` hook takes as a first parameter can be sync or async
+5. The action function that the `useActionState` hook takes as a first parameter can be sync or async
 
 ```
   async function signupAction(prevFormState, formAction) {
@@ -164,14 +164,14 @@
 
 ```
 
-4. When we click on form submit, the form sends a request to the backend and that can take time
+6. When we click on form submit, the form sends a request to the backend and that can take time
    - During that time the Submit button is still enabled
    - User can click on it again
    - So we have to disable the button when form submission is in pending state
    - We can use the 3rd return value from the `useActionState` hook
    - OR we can use a new hook `useFormStatus`
 
-5. `useFromStatus` hook
+7. `useFromStatus` hook
    - It gets imported from `react-dom`.
    - We cannot add this hook in the same component where we have the form
    - We have to use it in a child component
@@ -195,7 +195,7 @@ export default function Submit() {
 
 ```
 
-6. Registering `formAction` on multiple button in a form
+8. Registering `formAction` on multiple button in a form
    - If we have 1 submit button in a form then we can map the `formAction` in the form element using action attribute
    - If we have multiple buttons that we have to map then we can use `formAction` attribute on button element itself,
    - In this example below we are not using the `useActionState`, but we can use it if required
@@ -216,7 +216,7 @@ export default function Submit() {
 
 ```
 
-7. Need for `useOptimistic` hook 
+9. Need for `useOptimistic` hook 
    - Sometimes we do some action from form (like adding a value in database), and it takes some time
    - On finishing on that task we update some value on the HMI like increasing a counter
    - One way is to let the action complete and, then it will update the counter
@@ -224,7 +224,7 @@ export default function Submit() {
    - And then check once the form action finishes
    - So this hook gives us a temporary value when the form is in Pending state
 
-8. Syntax of `useOptimistic` hook
+10. Syntax of `useOptimistic` hook
    - First argument of the hook is the parameter for that we want to set value optimistically
    - Second argument is a function that can take multiple values with first values fixed as previous value of the value that you want to set optimistically
    - Hook will return an array of exactly 2 values 
