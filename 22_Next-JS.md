@@ -35,7 +35,7 @@
    - `layout.js` defines the shell/ layout or wrapper of one or more pages
    - Example of a `layout.js` is defined below
    - we don't have `head`, instead we have the reserve keyword `metadata` where we define the title and description
-   - we can have layout in each page that will override the default layout.
+   - we can have layout in each page that will not the default layout but just add its content on the current layout.
 
 ```
 import './globals.css'
@@ -55,15 +55,24 @@ export default function RootLayout({ children }) {
 
 ```
 
-8. `global.css`
+```
+export default function MealsLayout({children}) {
+    return (<>
+        <h1>Meals Layout</h1>
+        {children}
+    </>)
+}
+```
+
+1. `global.css`
       - defines global CSS classes
       - Need to import in the `layout.js` file. So that they can be available to all the pages
 
-9. `icon.png`
+2. `icon.png`
       - Also a reserve name
       - Used to set the fab icon that appears on the tab in the browser
 
-10. Other components
+3.  Other components
       - `page.js` works as a `App.js` in the next.js
       - So we can add more components in the `page.js` 
       - we can define these components anywhere in the application (even outside app folder)
