@@ -113,3 +113,78 @@ export const sendCartData = (cart) => {
   }, [cart, dispatch]);
 
 ```
+
+
+5. Action creators are just functions that returns some action
+
+6. Action can be sync or async
+
+7. In case the actions are sync then it can directly returns the action object like
+
+```
+    const dispatcher = useDispatcher();
+
+    export const abc = (value) => {
+        return  {
+            type: 'ADD',
+            payload: value
+        }
+    }
+
+    handleAdd(value) {
+        dispatcher(abc(value));
+    }
+
+
+```
+
+8. In case of async we use Thunk where instead of returning the object itself we returns an async function that will dispatches the action
+
+```
+
+export const abc = (value) => {
+    return async (dispatcher) => {
+        dispatcher({
+            type: 'ADD',
+            payload: value
+        })
+    }
+}
+
+
+in a component
+
+const dispatcher = useDispatcher();
+
+useEffect(() => {
+    dispatcher(abc(value));
+}, dispatcher)
+
+```
+
+9. Other way to create an async action creator
+
+```
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
+  const res = await fetch('/users');
+  return res.json();
+});
+```
+
+10. If we are using createAsyncThunk then we have to use `extraReducers` instead of `reducers` in a slice
+
+```
+extraReducers : (builder) => {
+    builder
+        .addCase(fetchUsers.pending, (state) => {
+            state.loading = true;
+        })
+        .addCase(fetchUsers.fulfilled, (state, action) => {
+            state.loading = false
+            state.users = action.payload
+        })
+}
+
+```
+
+11. we can create an action creator in the slice class and export it
