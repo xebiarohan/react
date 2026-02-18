@@ -55,7 +55,7 @@ export default function RootLayout({ children }) {
 
 ```
 
-```
+```mealsLayout.js
 export default function MealsLayout({children}) {
     return (<>
         <h1>Meals Layout</h1>
@@ -124,7 +124,7 @@ export default function Header() {
     - So for all the dynamic routes this page.js will get called
     - We can use the `params` passed by Next.js as a prop in this component to retrieve the dynamic value
 
-```
+```page.js
 export default function BlogPostPage({params}) {
     return (
         <main>
@@ -133,4 +133,14 @@ export default function BlogPostPage({params}) {
         </main>
     );
 }
+```
+
+13. We can have async component function in `Next.JS`
+
+```Example
+
+export default async function Meals() {
+  ...
+}
+
 ```
