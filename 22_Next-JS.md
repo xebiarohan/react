@@ -7,9 +7,9 @@
 3. Next.js works with react server components. Page, HTML is rendered on the server and sent to the client
 
 4. Project structure
-    - app is the main folder, only the files inside app folder are considered
-    - there are some reserve file names like `page.js, layout.js`
-    - `page.js` simply tells the `next.js` to render a page
+    - `app` is the main folder, only the files inside app folder are considered
+    - There are some reserve file names like `page.js, layout.js`
+    - `page.js` simply tells the `next.js` to render a page on HMI
     - These pages are React server component (syntax is same as any other react component)
     - The return value of the server component is sent to the browser to be rendered as HTML code
     - By default when we run the application this `page.js` gets rendered
@@ -35,9 +35,9 @@
    - `layout.js` defines the shell/ layout or wrapper of one or more pages
    - Example of a `layout.js` is defined below
    - we don't have `head`, instead we have the reserve keyword `metadata` where we define the title and description
-   - we can have layout in each page that will not the default layout but just add its content on the current layout.
+   - we can have layout in each page that will not overide the default layout but just add its content on the current layout.
 
-```
+```layout.js
 import './globals.css'
 
 export const metadata = {
@@ -64,15 +64,15 @@ export default function MealsLayout({children}) {
 }
 ```
 
-1. `global.css`
+8. `global.css`
       - defines global CSS classes
       - Need to import in the `layout.js` file. So that they can be available to all the pages
 
-2. `icon.png`
+9. `icon.png`
       - Also a reserve name
       - Used to set the fab icon that appears on the tab in the browser
 
-3.  Other components
+10.  Other components
       - `page.js` works as a `App.js` in the next.js
       - So we can add more components in the `page.js` 
       - we can define these components anywhere in the application (even outside app folder)
