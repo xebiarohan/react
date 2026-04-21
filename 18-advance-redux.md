@@ -43,10 +43,10 @@ useEffect(() => {
 ```
 
 4. Action creators
-   - We can create an action creator in the slice class and export it
    - An **action creator** is a function that returns an action object.
+   - We can create an action creator in the slice class and export it
    - `type` in the return object must point to a function in reducers in one of slice
-   - type is equal to '<slice-name>/<reducer-function>' name
+   - type is equal to '`slice-name`/`reducer-function`' name
    - then we can dispatch the action like
 
 ```js
@@ -72,7 +72,7 @@ createSlice({
 dispatch(addItem("toys"));
 ```
 
-5. Async action creators
+1. Async action creators
    - A function that performs async work (API call, timeout, etc.) and then dispatches an action
    - here `fetchCartItems()` is a function that does some async work and then dispatches the action
 
