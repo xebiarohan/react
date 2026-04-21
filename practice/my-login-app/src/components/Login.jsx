@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import classes from "./Login.module.css";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Login() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const items = useSelector((state) => state.cart.items);
   //const [formState, updatedFormHandler, isPending] = useActionState(handleFormData, {error: '',})
 
   function handleFormData(formData) {
@@ -32,6 +34,7 @@ export default function Login() {
   return (
     <div className={classes.container}>
       <div className={classes.card}>
+        {items?.length > 0 && <p>{items[0]}</p>}
         <h2 className={classes.title}>Welcome Back</h2>
         <p className={classes.subtitle}>Login to your account</p>
         {displayErrorMessage()}

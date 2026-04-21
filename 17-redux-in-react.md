@@ -2,7 +2,7 @@
 
 1. Install redux and react-redux
 
-```
+```js
 npm install redux react-redux
 
 ```
@@ -11,7 +11,7 @@ npm install redux react-redux
    - Create a package name store (optional but good practice)
    - Create an index.js class that contains the store
 
-```
+```js
 import {createStore} from "redux";
 
 const counterReducer = (state = {counter: 0}, action) => {
@@ -35,7 +35,7 @@ export default store;
    - Wrap that around the `App` component
    - Then we pass the `store` to that `Provider` element
 
-```
+```js
 import React from "react";
 import ReactDOM from "react-dom/client";
 
@@ -59,7 +59,7 @@ root.render(
    - It will help in getting the specific keys from the state of the store.
    - And it also subscribes to the store, so that we can get the latest value of the state.
 
-```
+```js
 import { useSelector } from "react-redux";
 
 import classes from "./Counter.module.css";
@@ -85,7 +85,7 @@ export default Counter;
    - Executing the `useDispatcher` function will give a function that we can name anything.
    - Using that function we can send any action to the reducer function of the store.
 
-```
+```js
 import { useSelector, useDispatch } from "react-redux";
 
 import classes from "./Counter.module.css";
@@ -131,7 +131,7 @@ export default Counter;
      - first one is to map the state to the props of the component
      - Second one is tp map the dispatcher functions to the props of the component
 
-```
+```js
 const mapStateToProps = (state) => {
   return {
     counter: state.counter
@@ -148,7 +148,7 @@ const mapDispatchToProps = (dispatch) => {
 
 7. Class based component complete example
 
-```
+```js
 import { connect } from "react-redux";
 
 import classes from "./Counter.module.css";
@@ -216,7 +216,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Counter);
     - Here we can change the state directly, no need to mutate the object
 
 
-```
+```js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -254,7 +254,7 @@ const counterSlice = createSlice({
     - In the simple redux we have only 1 reducer so we can directly pass it to the `createStore`
     - Here we can have multiple reducer 1 per slice, so have to pass an object in `reducer` key and value is the reducer of the slice method (in our example we have `counterSlice`)
 
-```
+```js
 const store = configureStore({
   reducer: {counter: counterSlice.reducer}
 });
@@ -270,7 +270,7 @@ export default store;
     - `useSelector` hook is also changed, now we have to call `state.<slice name>.value`
     - Like we have slice name `counter` ( in the reducer of configure store) so we will extract the state using `state.counter.showCounter`.
 
-```
+```js
 const store = configureStore({
   reducer: { counter : counterSlice.reducer }
 });
@@ -280,7 +280,7 @@ export const counterActions = counterSlice.actions;
 export default store;
 ```
 
-```
+```js
 import { useSelector, useDispatch } from "react-redux";
 import { counterActions } from "../store/index";
 import classes from "./Counter.module.css";
@@ -322,7 +322,7 @@ export default Counter;
 
 13. Multiple Slice example
 
-```
+```js
 const initialCounterState = {
   counter: 0,
   showCounter: true,
@@ -384,7 +384,7 @@ export default store;
     - we can export the actions from each slice file
     - Export the reducer as the default export
 
-```
+```js
 import { createSlice } from "@reduxjs/toolkit";
 
 
@@ -409,7 +409,7 @@ export const authActions = authSlice.actions;
 export default authSlice.reducer;
 ```
 
-```
+```js
 import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "./counter-slice";
 import authReducer from "./auth-slice";
@@ -423,5 +423,24 @@ const store = configureStore({
 });
 
 export default store;
+
+```
+
+15. `shallowEqual` in `useSelector`
+    - When we get more than 1 element from global state then we have to wrap it in an object
+    - So if anything gets changed in the global state, this object is updated
+    - as {} !== {}. So every time this component gets re-rendered
+    - To stop that we have to compare shallow equally using the `shallowEqual`
+
+```js
+import { shallowEqual, useSelector } from "react-redux";
+
+const data = useSelector(
+  state => ({
+    count: state.counter,
+    user: state.user
+  }),
+  shallowEqual
+);
 
 ```

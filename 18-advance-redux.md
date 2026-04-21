@@ -3,14 +3,12 @@
 Firebase: https://console.firebase.google.com/u/0/project/backend-14637/database/backend-14637-default-rtdb/data
 
 1. Async code handling
-
    - Reducer function must be a pure function, side effect free and synchronous.
    - As we cannot handle async code in a reducer function, there are 2 ways we can handle them
      - Using the `useEffect` hook in the component where we are going to call `dispatch` function
      - Inside the `action creators` (new concept)
 
 2. Where to keep the login
-
    - Possible places are : reducers, actions or components
    - In case the code is synchronous then reducers are better
    - In case the code is asynchronous or having side effects then action creators or components are better
@@ -44,147 +42,209 @@ useEffect(() => {
 
 ```
 
-4. `action creators`
-   - Thunk
-     - A function that delays an action until later (until something else gets completed)
-     - Action creator is a thunk that returns a function, that function eventually returns an action
-     - we create a function inside a function, internal function contains all the logic including the side effect.
+4. Action creators
+   - We can create an action creator in the slice class and export it
+   - An **action creator** is a function that returns an action object.
+   - `type` in the return object must point to a function in reducers in one of slice
+   - type is equal to '<slice-name>/<reducer-function>' name
+   - then we can dispatch the action like
 
-```In the cart-actions.js
-
-export const sendCartData = (cart) => {
-  return async (dispatch) => {
-    dispatch(
-      uiActions.showNotification({
-        status: "pending",
-        title: "Sending...",
-        message: "Sending cart data",
-      })
-    );
-
-    const sendRequest = async () => {
-      const response = await fetch(
-        "https://backend-14637-default-rtdb.firebaseio.com/cart.json",
-        {
-          method: "PUT",
-          body: JSON.stringify(cart),
-          ContentType: "application/json",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Sending cart data failed");
-      }
-    };
-
-    try {
-      await sendRequest();
-
-      dispatch(
-        uiActions.showNotification({
-          status: "success",
-          title: "Success",
-          message: "Sent cart data successfully",
-        })
-      );
-    } catch (error) {
-      dispatch(
-        uiActions.showNotification({
-          status: "error",
-          title: "Error",
-          message: "Sending cart data failed!",
-        })
-      );
-    }
+```js
+function addItem(item) {
+  return {
+    type: "cart/addItem",
+    payload: item,
   };
-};
-
-
-```
-
-```in app.js
-  useEffect(() => {
-    if (isInitial) {
-      isInitial = false;
-      return;
-    }
-
-    dispatch(sendCartData(cart));
-  }, [cart, dispatch]);
-
-```
-
-
-5. Action creators are just functions that returns some action
-
-6. Action can be sync or async
-
-7. In case the actions are sync then it can directly returns the action object like
-
-```
-    const dispatcher = useDispatcher();
-
-    export const abc = (value) => {
-        return  {
-            type: 'ADD',
-            payload: value
-        }
-    }
-
-    handleAdd(value) {
-        dispatcher(abc(value));
-    }
-
-
-```
-
-8. In case of async we use Thunk where instead of returning the object itself we returns an async function that will dispatches the action
-
-```
-
-export const abc = (value) => {
-    return async (dispatcher) => {
-        dispatcher({
-            type: 'ADD',
-            payload: value
-        })
-    }
 }
-
-
-in a component
-
-const dispatcher = useDispatcher();
-
-useEffect(() => {
-    dispatcher(abc(value));
-}, dispatcher)
-
 ```
 
-9. Other way to create an async action creator
-
-```
-export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-  const res = await fetch('/users');
-  return res.json();
+```js
+createSlice({
+  name: "cart",
+  reducers: {
+    addItem(state, action) {},
+    removeItem(state, action) {},
+  },
 });
 ```
 
-10. If we are using createAsyncThunk then we have to use `extraReducers` instead of `reducers` in a slice
-
+```js
+dispatch(addItem("toys"));
 ```
-extraReducers : (builder) => {
-    builder
-        .addCase(fetchUsers.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(fetchUsers.fulfilled, (state, action) => {
-            state.loading = false
-            state.users = action.payload
-        })
+
+5. Async action creators
+   - A function that performs async work (API call, timeout, etc.) and then dispatches an action
+   - here `fetchCartItems()` is a function that does some async work and then dispatches the action
+
+```js
+// Instead of
+dispatch(addItem("item"));
+
+// we do
+dispatch(fetchCartItems());
+```
+
+6. Thunk
+   - A function that returns another function (with logic inside)
+   - A thunk action creator returns a function that performs async work and dispatches normal actions.
+   - Inner function gets dispatch and state values
+   - Thunk works as a middleware, as redux only accepts the object, but Thunk allows dispatching functions
+
+```js
+function myThunk() {
+  return function (dispatch, getState) {
+    // async or sync logic here
+  };
 }
-
 ```
 
-11. we can create an action creator in the slice class and export it
+7. Flow of a Thunk
+   - From the component we can dispatch a thunk function (fetchData in the below example)
+   - As redux only wants an object, So thunk comes into picture, and handles this request
+   - when we dispatch a function from a component, thunk handles its internal function and passes dispatch and state to it and calls that internal function
+   - Then internal function dispatches the objects to redux.
+
+```js
+dispatch(fetchData());
+```
+
+```js
+export function fetchData() {
+  return async function (dispatch, getState) {
+    // 1. optional: dispatch loading action
+    dispatch({ type: "data/loading" });
+
+    try {
+      // 2. async work (API call)
+      const response = await fetch("https://api.example.com/data");
+      const data = await response.json();
+
+      // 3. dispatch success action
+      dispatch({
+        type: "data/success",
+        payload: data,
+      });
+    } catch (error) {
+      // 4. dispatch error action
+      dispatch({
+        type: "data/error",
+        payload: error.message,
+      });
+    }
+  };
+}
+```
+
+8. `createAsyncThunk`
+   - handles async logic AND automatically dispatches lifecycle actions.
+   - Lifecycle actions like pending, fulfilled, rejected.
+
+9. Basic Syntax
+   - method takes 2 argument type and `payloadCreator`
+   - type is the name of the async thunk
+   - payload creator is the function that will call the async code.
+
+```js
+createAsyncThunk(type, payloadCreator);
+
+// type value
+("cart/fetchItems");
+
+// This generates
+cart / fetchItems / pending;
+cart / fetchItems / fulfilled;
+cart / fetchItems / rejected;
+```
+
+10. `payloadCreator`
+    - async function that has 2 arguments
+    - first one is the argument that we want to pass
+    - Second is `thunkAPI` it has dispatch, getState, rejectWithValue, requestId, signal.
+
+```js
+// payloadCreator
+async (arg, thunkAPI) => {
+  // API call
+};
+```
+
+11. Real example
+    - On calling it will dispatch 3 actions
+
+```js
+export const fetchItems = createAsyncThunk(
+  "cart/fetchItems",
+  async (_, thunkAPI) => {
+    const response = await fetch("https://api.example.com/items");
+    const data = await response.json();
+    return data;
+  },
+);
+
+// actions this function dispatches
+fetchItems.pending;
+fetchItems.fulfilled;
+fetchItems.rejected;
+```
+
+12. Calling thunk function
+    - Calling remains same
+
+```js
+dispatch(fetchItems());
+```
+
+13. Handing dispatched actions
+    - We cannot add these dispatch actions in the reducers
+    - We have to add them in the `extraReducers` of a slice
+
+```js
+extraReducers: (builder) => {
+  builder
+    .addCase(fetchItems.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(fetchItems.fulfilled, (state, action) => {
+      state.loading = false;
+      state.items = action.payload;
+    })
+    .addCase(fetchItems.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+};
+```
+
+14. Error handing
+    - Use the `rejectWithValue` of `ThunkAPI`
+    - It will populate the payload value of an action
+    - So that we can pass it to the `fetchItems.rejected` action creator
+
+```js
+const fetchItems = createAsyncThunk(
+  "cart/fetchItems",
+  async (_, thunkAPI) => {
+     try {
+      const response = await fetch("/api");  // fails
+
+      if(!response.ok) {
+        thunkAPI.rejectWithValue('Invalid response');
+      }
+
+      return await response.json();
+     } catch(error) {
+        thunkAPI.rejectWithValue(error.message);
+     }
+  },
+);
+
+
+// handling error in extraReducers
+
+extraReducers: (builder) => {
+  builder
+  .addCase('fetchItems.rejected', (state, action) => {
+    state.error = action.payload
+  })
+}
+```

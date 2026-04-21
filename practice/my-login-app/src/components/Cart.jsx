@@ -35,5 +35,8 @@ export default function Cart() {
 }
 
 export function UserLoader() {
-  throw new Error('Data fetching failed');
+  return {
+    name: "rohan",
+    job: "engineer",
+  };
 }
