@@ -1,0 +1,198 @@
+1. Folder structure
+
+```js
+src/
+│
+├── api/                  # API layer (all HTTP calls)
+│   ├── client.js
+│   ├── users.api.js
+│   └── posts.api.js
+│
+├── hooks/                # Custom TanStack hooks
+│   ├── queries/
+│   │   ├── useUsers.js
+│   │   └── useUser.js
+│   ├── mutations/
+│   │   └── useCreateUser.js
+│
+├── components/           # Reusable UI components
+│   ├── UserList.jsx
+│   └── UserItem.jsx
+│
+├── pages/                # Page-level components
+│   ├── UsersPage.jsx
+│   └── UserDetailPage.jsx
+│
+├── query/                # TanStack config
+│   ├── queryClient.js
+│   └── queryKeys.js
+│
+├── utils/
+│   └── helpers.js
+│
+├── App.jsx
+└── main.jsx
+
+```
+
+2. query/queryClient.js
+
+```js
+import { QueryClient } from '@tanstack/react-query';
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 min
+      retry: 2,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+```
+
+3. main.jsx
+
+```js
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './query/queryClient';
+
+<QueryClientProvider client={queryClient}>
+  <App />
+</QueryClientProvider>
+
+```
+
+4. query/queryKeys.js
+
+```js
+export const queryKeys = {
+  users: ['users'],
+  user: (id) => ['user', id],
+};
+
+```
+
+5. api/client.js
+
+```js
+import axios from 'axios';
+
+export const apiClient = axios.create({
+  baseURL: '/api',
+});
+
+```
+
+6. api/users.api.js
+
+```js
+import { apiClient } from './client';
+
+export const fetchUsers = async () => {
+  const { data } = await apiClient.get('/users');
+  return data;
+};
+
+export const fetchUser = async (id) => {
+  const { data } = await apiClient.get(`/users/${id}`);
+  return data;
+};
+
+export const createUser = async (user) => {
+  const { data } = await apiClient.post('/users', user);
+  return data;
+};
+
+```
+7. hooks/queries/useUsers.js
+
+```js
+import { useQuery } from '@tanstack/react-query';
+import { fetchUsers } from '../../api/users.api';
+import { queryKeys } from '../../query/queryKeys';
+
+export const useUsers = () => {
+  return useQuery({
+    queryKey: queryKeys.users,
+    queryFn: fetchUsers,
+  });
+};
+```
+
+8. hooks/queries/useUser.js
+
+```js
+import { useQuery } from '@tanstack/react-query';
+import { fetchUser } from '../../api/users.api';
+import { queryKeys } from '../../query/queryKeys';
+
+export const useUser = (id) => {
+  return useQuery({
+    queryKey: queryKeys.user(id),
+    queryFn: () => fetchUser(id),
+    enabled: !!id,
+  });
+};
+
+```
+
+9. hooks/mutations/useCreateUser.js
+
+```js
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createUser } from '../../api/users.api';
+import { queryKeys } from '../../query/queryKeys';
+
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKeys.users);
+    },
+  });
+};
+
+```
+
+10. components/UserList.jsx
+
+```
+export const UserList = ({ users }) => {
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+};
+
+```
+
+11. pages/UsersPage.jsx
+```js
+import { useUsers } from '../hooks/queries/useUsers';
+import { UserList } from '../components/UserList';
+
+export const UsersPage = () => {
+  const { data, isLoading, error } = useUsers();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading users</p>;
+
+  return <UserList users={data} />;
+};
+```
+
+12. Data flow
+
+```js
+Component → Hook → API → Server
+           ↓
+        TanStack Cache
+
+```
